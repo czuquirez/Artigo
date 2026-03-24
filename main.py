@@ -45,10 +45,10 @@ def simular(solution):
 
 # ******************************************************************************************************************
 
-data_name = "L1FO5_gwo_10_40_2_res7"
-modelo = "cgwo"  # cgwo ou pso
+data_name = "L1FO5_pso_10_40_1_res7"
+modelo = "pso"  # cgwo ou pso
 n_freq = 150
-resolution = 1
+resolution = 7
 wl_start = 10.0e-6
 wl_stop = 40.0e-6
 pop = 40
