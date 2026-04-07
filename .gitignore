@@ -1,4 +1,6 @@
 data/*
 saves/*
+!data/.gitkeep
+!saves/.gitkeep
 __pycache__/
 .idea/

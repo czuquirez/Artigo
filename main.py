@@ -3,7 +3,6 @@ import pathlib
 import mealpy.swarm_based.GWO as GWO
 import mealpy.swarm_based.PSO as PSO
 from mealpy import FloatVar
-from sko.GA import GA
 from tqdm import tqdm
 
 from sim import Simulation
@@ -54,17 +53,28 @@ wl_stop = 40.0e-6
 pop = 40
 n_itr = 50
 fun_obj = fo5
-fun_obj_str = "f05"
+fun_obj_str = "fo5"
 
 
 # ******************************************************************************************************************
 
+ref = [
+    0.9e-6,
+    55e-9,
+    0.36e-6,
+    0.885246,
+    20.0e-9,
+    0.4e-6,
+    1.28e-6,
+]  # Parametros do Artigo do Chen
+lb = [0.35 * x for x in ref]
+ub = [1.65 * x for x in ref]
 
 with open(
     f"{fpath}\\data\\diario_teste.txt", "a"
 ) as f:  # Abre de novo (Agora certamente o arquivo existe e tem o eixo x na 1° linha)
     f.write(
-        f"Nome: {data_name}, Resulucao: {resolution}, Banda: {wl_stop - wl_start}{(wl_start, wl_stop)}, nfreq: {n_freq}, Populacao: {pop}, Epocas: {n_itr}, função obj: {fun_obj_str}"
+        f"Nome: {data_name}, Resulucao: {resolution}, Banda: {wl_stop - wl_start}{(wl_start, wl_stop)}, nfreq: {n_freq}, Populacao: {pop}, Epocas: {n_itr}, função obj: {fun_obj_str}, lb: {lb}, ub: {ub}"
     )  # Adiciona os dados do teste rodado
     f.write("\n")  # Pula linha
     f.close()
@@ -91,18 +101,6 @@ def setparams(params, h4=0.2e-6):
         [1, "ring1", 3, h1, 0, 0, r2, w, "Ti (Titanium) - Palik"],
     ]
 
-
-ref = [
-    0.9e-6,
-    55e-9,
-    0.36e-6,
-    0.885246,
-    20.0e-9,
-    0.4e-6,
-    1.28e-6,
-]  # Parametros do Artigo do Chen
-lb = [0.35 * x for x in ref]
-ub = [1.65 * x for x in ref]
 
 lum.objects = setparams(ref)
 lum.create(
