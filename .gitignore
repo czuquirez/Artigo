@@ -2,6 +2,7 @@ data/*
 saves/*
 !data/.gitkeep
 !saves/.gitkeep
+TODO.md
 __pycache__/
 .idea/
 teste.py
