@@ -4,12 +4,12 @@ from rdata import Rdata
 
 fpath = pathlib.Path().resolve()._str
 
-data_name = rf"{fpath}\data\L1FO5_gwo_10_40_1_res7.json"
+data_name = rf"{fpath}\data\L1FO5_gwo_20_60_1_res3.json"
 
 dataset = Rdata()
 
-key = "fo3"
+key = "fo5"
 dataset.analise(data_name, key=key)
-dataset.show(data_name, order=key)
-# dataset.evolution(data_name,30,key=key)
-# dataset.convergence(data_name,30,key=key)
+# dataset.show(data_name, order=key)
+dataset.evolution(data_name, 40, key=key)
+dataset.convergence(data_name, 40, key=key)

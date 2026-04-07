@@ -229,6 +229,7 @@ class Simulation:
             ),  # Pontos de absorção (porém o lumerical devolve os dados em array do numpy ent tem que transformar em lista)
         }
         x = r_lambda
+        b_70 = 0
         sum_90 = [0]
         sum_98 = [0]
         int_90 = 0
@@ -242,7 +243,9 @@ class Simulation:
                 integral += (
                     ((item + data["Y"][i - 1]) * (x[i - 1] - x[i])) * 0.5 * 1.0e6
                 )
-            if item >= 0.9:
+            if item <= 0.7:
+                b_70 += 1
+            elif item >= 0.9:
                 if i != 0:
                     if data["Y"][i - 1] > 0.9:
                         sum_90[k1] += 1
@@ -270,6 +273,7 @@ class Simulation:
                         )
 
         ans = {
+            "b_70": b_70,
             "sum_90": sum_90,
             "sum_98": sum_98,
             "int_90": int_90,
