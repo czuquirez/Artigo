@@ -1,3 +1,5 @@
+# Importações ***************************************
+import json
 import pathlib
 import time
 from datetime import timedelta
@@ -9,10 +11,10 @@ from tqdm import tqdm
 
 from sim import Simulation
 
-fpath = pathlib.Path().resolve()._str
+# Importações ***************************************
 
 
-# ----------------------------------------FUNÇÕES OBJETIVO -----------------------------------------------
+# Funções objetivo **********************************
 def fo1(solution):
     data = run(solution)
     return max(data["sum_90"])
@@ -52,50 +54,10 @@ def simular(solution):
     return sim(solution)
 
 
-# ----------------------------------------------------------------------------------------------------------
-
-# ******************************************************************************************************************
-
-data_name = "L1FO6_gwo_3_60_1_res3"
-modelo = "cgwo"  # cgwo ou pso
-n_freq = 150
-resolution = 3
-wl_start = 3.0e-6
-wl_stop = 60.0e-6
-pop = 20
-n_itr = 20
-fun_obj = fo6
-fun_obj_str = "fo6"
+# Funções objetivo **********************************
 
 
-# ******************************************************************************************************************
-
-ref = [
-    0.9e-6,
-    55e-9,
-    0.36e-6,
-    0.885246,
-    20.0e-9,
-    0.4e-6,
-    1.28e-6,
-]  # Parametros do Artigo do Chen
-lb = [0.35 * x for x in ref]
-ub = [1.65 * x for x in ref]
-
-with open(
-    f"{fpath}\\data\\diario.txt", "a"
-) as f:  # Abre de novo (Agora certamente o arquivo existe e tem o eixo x na 1° linha)
-    f.write(
-        f"Nome: {data_name}, modelo: {modelo}, Resulucao: {resolution}, Banda: {wl_stop - wl_start}{(wl_start, wl_stop)}, nfreq: {n_freq}, Populacao: {pop}, Epocas: {n_itr}, função obj: {fun_obj_str}, lb: {lb}, ub: {ub}"
-    )  # Adiciona os dados do teste rodado
-    # f.write("\n")  # Pula linha
-    f.close()
-
-save_path = f"{fpath}\\saves\\save.fsp"  # Path para salvar a simulação
-data_path = f"{fpath}\\data\\{data_name}.json"
-lum = Simulation()
-
-
+# Funções auxiliares ********************************
 def setparams(params, h4=0.2e-6):
     p, w, r, epsilon_r, h1, h2, h3 = params
     lum.p = p
@@ -114,16 +76,6 @@ def setparams(params, h4=0.2e-6):
     ]
 
 
-# Marca o tempo de início
-inicio = time.perf_counter()
-
-lum.objects = setparams(ref)
-lum.create(
-    save_path, n_freq=n_freq, resolution=resolution, wl_start=wl_start, wl_stop=wl_stop
-)
-pbar = tqdm(total=pop * n_itr, desc="Otimizando...")  # Barrinha de progresso
-
-
 def run(params):
     lum.objects = setparams(params)
     lum.config()
@@ -135,34 +87,100 @@ def sim(params):
     lum.objects = setparams(params)
     lum.config()
     pbar.update()
-    input()
+    # input()
     return 0.0
 
 
-problem = {
-    "obj_func": fun_obj,
-    "bounds": FloatVar(lb=lb, ub=ub, name="oi"),
-    "minmax": "max",
-    "log_to": f"{fpath}\\data\\{data_name}.json",
-}
+# Funções auxiliares ********************************
 
-if modelo == "cgwo":
-    model = GWO.ChaoticGWO(
-        epoch=n_itr, pop_size=pop, chaotic_name="chebyshev", initial_chaotic_value=0.7
-    )
-    g_best = model.solve(problem)
-
-elif modelo == "pso":
-    model = PSO.P_PSO(epoch=n_itr, pop_size=pop)
-    g_best = model.solve(problem)
-
-fim = time.perf_counter()
-tempo_total_segundos = fim - inicio
-tempo_formatado = str(timedelta(seconds=int(tempo_total_segundos)))
-
-with open(
-    f"{fpath}\\data\\diario.txt", "a"
-) as f:  # Abre de novo (Agora certamente o arquivo existe e tem o eixo x na 1° linha)
-    f.write(f" tempo: {tempo_formatado}")  # Adiciona os dados do teste rodado
-    f.write("\n")  # Pula linha
+# Le a fila de simulações
+fpath = pathlib.Path().resolve()._str
+with open(fpath + "\\fila.json", "r") as f:
+    fila = json.load(f)
     f.close()
+
+# Referência os limites inferiores e superiores para o otimizador
+# Valores de referência tirados do artigo do Chen
+ref = [
+    0.9e-6,
+    55e-9,
+    0.36e-6,
+    0.885246,
+    20.0e-9,
+    0.4e-6,
+    1.28e-6,
+]
+lb = [0.35 * x for x in ref]
+ub = [1.65 * x for x in ref]
+
+save_path = f"{fpath}\\saves\\save.fsp"  # Path para salvar a simulação
+lum = Simulation()
+
+# Loop principal percorrendo a fila
+
+for item in fila["fila"]:
+    (
+        data_name,
+        modelo,
+        resolution,
+        wl_start,
+        wl_stop,
+        n_freq,
+        pop,
+        n_itr,
+        fun_obj_str,
+    ) = item.values()
+    fun_obj = eval(f"{fun_obj_str}")
+    data_path = f"{fpath}\\data\\{data_name}.json"
+    with (
+        open(f"{fpath}\\data\\diario_teste.txt", "a") as f
+    ):  # Abre de novo (Agora certamente o arquivo existe e tem o eixo x na 1° linha)
+        f.write(
+            f"Nome: {data_name}, modelo: {modelo}, Resulucao: {resolution}, Banda: {wl_stop - wl_start}{(wl_start, wl_stop)}, nfreq: {n_freq}, Populacao: {pop}, Epocas: {n_itr}, função obj: {fun_obj_str}, lb: {lb}, ub: {ub}"
+        )  # Adiciona os dados do teste rodado
+        # f.write("\n")  # Pula linha
+        f.close()
+
+    # Marca o tempo de início
+    inicio = time.perf_counter()
+
+    lum.objects = setparams(ref)
+    lum.create(
+        save_path,
+        n_freq=n_freq,
+        resolution=resolution,
+        wl_start=wl_start,
+        wl_stop=wl_stop,
+    )
+    pbar = tqdm(total=pop * n_itr, desc="Otimizando...")  # Barrinha de progresso
+
+    problem = {
+        "obj_func": fun_obj,
+        "bounds": FloatVar(lb=lb, ub=ub, name="oi"),
+        "minmax": "max",
+        "log_to": f"{fpath}\\data\\{data_name}.json",
+    }
+
+    if modelo == "gwo":
+        model = GWO.ChaoticGWO(
+            epoch=n_itr,
+            pop_size=pop,
+            chaotic_name="chebyshev",
+            initial_chaotic_value=0.7,
+        )
+        g_best = model.solve(problem)
+
+    elif modelo == "pso":
+        model = PSO.P_PSO(epoch=n_itr, pop_size=pop)
+        g_best = model.solve(problem)
+
+    fim = time.perf_counter()
+    tempo_total_segundos = fim - inicio
+    tempo_formatado = str(timedelta(seconds=int(tempo_total_segundos)))
+
+    with (
+        open(f"{fpath}\\data\\diario.txt", "a") as f
+    ):  # Abre de novo (Agora certamente o arquivo existe e tem o eixo x na 1° linha)
+        f.write(f" tempo: {tempo_formatado}")  # Adiciona os dados do teste rodado
+        f.write("\n")  # Pula linha
+        f.close()
