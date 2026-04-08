@@ -3,6 +3,47 @@ import os
 
 import matplotlib.pyplot as plt
 
+# Fumções ********************************************************************
+
+
+def sum_90(item):
+    return max(item["sum_90"])
+
+
+def sum_98(item):
+    return max(item["sum_98"])
+
+
+def int_90(item):
+    return item["int_90"]
+
+
+def int_98(item):
+    return item["int_98"]
+
+
+def integral(item):
+    return item["integral"]
+
+
+def fo3(item):
+    return item["fo3"]
+
+
+def fo4(item):
+    return item["fo4"]
+
+
+def fo5(item):
+    return item["fo5"]
+
+
+def fo6(item):
+    return item["fo6"]
+
+
+# ****************************************************************************
+
 
 class Rdata:
     def __init__(self):
@@ -21,6 +62,7 @@ class Rdata:
         for element in data:
             sum_90 = [0]
             sum_98 = [0]
+            b_70 = 0
             int_90 = 0
             int_98 = 0
             integral = 0
@@ -32,7 +74,10 @@ class Rdata:
                     integral += (
                         ((item + element["Y"][i - 1]) * (x[i - 1] - x[i])) * 0.5 * 1.0e6
                     )
-                if item >= 0.9:
+                if item <= 0.7:
+                    b_70 += 1
+
+                elif item >= 0.9:
                     if i != 0:
                         if element["Y"][i - 1] > 0.9:
                             sum_90[k1] += 1
@@ -76,6 +121,7 @@ class Rdata:
                     "fo3": max(sum_90) + max(sum_98),
                     "fo4": 1.5 * int_90 + int_98,
                     "fo5": integral + 2 * int_90,
+                    "fo6": sum(sum_90) + sum(sum_98) - b_70,
                     "Y": element["Y"],
                 }
             )
@@ -93,30 +139,6 @@ class Rdata:
             print(f"params: {data[index - 2]['params']}")
             return None
 
-        def sum_90(item):
-            return max(item["sum_90"])
-
-        def sum_98(item):
-            return max(item["sum_98"])
-
-        def int_90(item):
-            return item["int_90"]
-
-        def int_98(item):
-            return item["int_98"]
-
-        def integral(item):
-            return item["integral"]
-
-        def fo3(item):
-            return item["fo3"]
-
-        def fo4(item):
-            return item["fo4"]
-
-        def fo5(item):
-            return item["fo5"]
-
         if order == "sum_90":
             data.sort(key=sum_90, reverse=True)
         elif order == "sum_98":
@@ -133,6 +155,8 @@ class Rdata:
             data.sort(key=fo4, reverse=True)
         elif order == "fo5":
             data.sort(key=fo5, reverse=True)
+        elif order == "fo6":
+            data.sort(key=fo6, reverse=True)
         best = 0
         for item in data:
             print(item["i"])
@@ -156,30 +180,6 @@ class Rdata:
     def analise(self, data_path, key="integral"):
         data, x = self.read(data_path)
 
-        def sum_90(item):
-            return max(item["sum_90"])
-
-        def sum_98(item):
-            return max(item["sum_98"])
-
-        def int_90(item):
-            return item["int_90"]
-
-        def int_98(item):
-            return item["int_98"]
-
-        def integral(item):
-            return item["integral"]
-
-        def fo3(item):
-            return item["fo3"]
-
-        def fo4(item):
-            return item["fo4"]
-
-        def fo5(item):
-            return item["fo5"]
-
         if key == "sum_90":
             data.sort(key=sum_90)
         elif key == "sum_98":
@@ -196,6 +196,9 @@ class Rdata:
             data.sort(key=fo4)
         elif key == "fo5":
             data.sort(key=fo5)
+        elif key == "fo6":
+            data.sort(key=fo6)
+
         for item in data:
             print(f"index: {item['i']}, {key}: {item[key]}")
 
@@ -237,7 +240,8 @@ class Rdata:
             vec = [sum(data[i][key]) for i in range(len(data))]
         else:
             vec = [data[i][key] for i in range(len(data))]
-        max_lim = 1.1 * max(vec)
+        max_lim = max(vec) + 0.2 * abs(max(vec))
+        min_lim = min(vec) - 0.1 * min(vec)
         n = round(len(data) / pop)
         for z_inicio in range(1, n, 16):
             fig, axes = plt.subplots(4, 4, figsize=(12, 9))
@@ -254,13 +258,9 @@ class Rdata:
                 ax.scatter(x_data, y_data)
                 ax.set_xlabel("Indivíduo")
                 ax.set_ylabel("Fitness")
-                ax.set_ylim(0, max_lim)
+                ax.set_ylim(min_lim, max_lim)
 
             plt.tight_layout(rect=[0, 0.03, 1, 0.95])
             fig.suptitle(f"Gerações {z_inicio} a {z_inicio + 15}", fontsize=16)
             plt.show()
-        #        for z in range(1,n):
-        #            plt.title(f'{z}° geracao')
-        #            plt.scatter([i for i in range(1,pop+1)], vec[pop * (z - 1):pop * z])
-        #            plt.show()
         return 0

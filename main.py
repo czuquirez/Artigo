@@ -1,4 +1,6 @@
 import pathlib
+import time
+from datetime import timedelta
 
 import mealpy.swarm_based.GWO as GWO
 import mealpy.swarm_based.PSO as PSO
@@ -41,6 +43,11 @@ def fo6(solution):
     return sum(data["sum_90"]) + sum(data["sum_98"]) - data["b_70"]
 
 
+def fo7(solution):
+    data = run(solution)
+    return sum(data["sum_90"]) + sum(data["sum_98"]) - 0.5 * data["b_70"]
+
+
 def simular(solution):
     return sim(solution)
 
@@ -49,11 +56,11 @@ def simular(solution):
 
 # ******************************************************************************************************************
 
-data_name = "L1FO6_pso_20_60_1_res3"
-modelo = "pso"  # cgwo ou pso
+data_name = "L1FO6_gwo_3_60_1_res3"
+modelo = "cgwo"  # cgwo ou pso
 n_freq = 150
 resolution = 3
-wl_start = 20.0e-6
+wl_start = 3.0e-6
 wl_stop = 60.0e-6
 pop = 20
 n_itr = 20
@@ -81,7 +88,7 @@ with open(
     f.write(
         f"Nome: {data_name}, modelo: {modelo}, Resulucao: {resolution}, Banda: {wl_stop - wl_start}{(wl_start, wl_stop)}, nfreq: {n_freq}, Populacao: {pop}, Epocas: {n_itr}, função obj: {fun_obj_str}, lb: {lb}, ub: {ub}"
     )  # Adiciona os dados do teste rodado
-    f.write("\n")  # Pula linha
+    # f.write("\n")  # Pula linha
     f.close()
 
 save_path = f"{fpath}\\saves\\save.fsp"  # Path para salvar a simulação
@@ -106,6 +113,9 @@ def setparams(params, h4=0.2e-6):
         [1, "ring1", 3, h1, 0, 0, r2, w, "Ti (Titanium) - Palik"],
     ]
 
+
+# Marca o tempo de início
+inicio = time.perf_counter()
 
 lum.objects = setparams(ref)
 lum.create(
@@ -145,3 +155,14 @@ if modelo == "cgwo":
 elif modelo == "pso":
     model = PSO.P_PSO(epoch=n_itr, pop_size=pop)
     g_best = model.solve(problem)
+
+fim = time.perf_counter()
+tempo_total_segundos = fim - inicio
+tempo_formatado = str(timedelta(seconds=int(tempo_total_segundos)))
+
+with open(
+    f"{fpath}\\data\\diario.txt", "a"
+) as f:  # Abre de novo (Agora certamente o arquivo existe e tem o eixo x na 1° linha)
+    f.write(f" tempo: {tempo_formatado}")  # Adiciona os dados do teste rodado
+    f.write("\n")  # Pula linha
+    f.close()
