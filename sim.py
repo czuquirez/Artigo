@@ -13,10 +13,10 @@ class Simulation:
 
     def __init__(self):
         os.add_dll_directory(
-            "C:\\Program Files\\Lumerical\\v202\\api\\python"
+            "C:\\Program Files\\Lumerical\\v241\\api\\python"
         )  # Para evitar um erro ao chamar a API (não sei se precisa mesmo)
         self.lumapi = importlib.util.spec_from_file_location(
-            "lumapi", "C:\\Program Files\\Lumerical\\v202\\api\\python\\lumapi.py"
+            "lumapi", "C:\\Program Files\\Lumerical\\v241\\api\\python\\lumapi.py"
         ).loader.load_module()  # Carrega a API, localizada nesse path ai (pode ser diferente para cada computador)
         self.objects = []
         self.p = 0.9e-6

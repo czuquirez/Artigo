@@ -50,6 +50,11 @@ def fo7(solution):
     return sum(data["sum_90"]) + sum(data["sum_98"]) - 0.2 * data["b_70"]
 
 
+def fo8(solution):
+    data = run(solution)
+    return data["integral"] + data["int_90"] + 3 * data["int_98"]
+
+
 def simular(solution):
     return sim(solution)
 

@@ -1,59 +1,70 @@
 {
   "fila": [
     {
-      "data_name": "L1FO6_pso_3_60_1_res3",
-      "modelo": "pso",
-      "n_freq": 150,
-      "resolution": 3,
-      "wl_start": 3.0e-6,
-      "wl_stop": 60.0e-6,
-      "pop": 20,
-      "n_itr": 20,
-      "fun_obj_str": "fo6"
-    },
-    {
-      "data_name": "L1FO5_gwo_3_60_1_res3",
+      "data_name": "L1FO5_gwo_10_50_1_res3",
       "modelo": "gwo",
       "n_freq": 150,
       "resolution": 3,
-      "wl_start": 3.0e-6,
-      "wl_stop": 60.0e-6,
-      "pop": 20,
-      "n_itr": 20,
+      "wl_start": 10.0e-6,
+      "wl_stop": 50.0e-6,
+      "pop": 40,
+      "n_itr": 30,
       "fun_obj_str": "fo5"
     },
     {
-      "data_name": "L1FO5_pso_3_60_1_res3",
+      "data_name": "L1FO5_pso_10_50_1_res3",
       "modelo": "pso",
       "n_freq": 150,
       "resolution": 3,
-      "wl_start": 3.0e-6,
-      "wl_stop": 60.0e-6,
-      "pop": 20,
-      "n_itr": 20,
+      "wl_start": 10.0e-6,
+      "wl_stop": 50.0e-6,
+      "pop": 40,
+      "n_itr": 30,
       "fun_obj_str": "fo5"
     },
     {
-      "data_name": "L1FO7_gwo_3_60_1_res3",
+      "data_name": "L1FO7_gwo_10_50_1_res3",
       "modelo": "gwo",
       "n_freq": 150,
       "resolution": 3,
-      "wl_start": 3.0e-6,
-      "wl_stop": 60.0e-6,
-      "pop": 20,
-      "n_itr": 20,
+      "wl_start": 10.0e-6,
+      "wl_stop": 50.0e-6,
+      "pop": 40,
+      "n_itr": 30,
       "fun_obj_str": "fo7"
     },
     {
-      "data_name": "L1FO7_pso_3_60_1_res3",
+      "data_name": "L1FO7_pso_10_50_1_res3",
       "modelo": "pso",
       "n_freq": 150,
       "resolution": 3,
-      "wl_start": 3.0e-6,
-      "wl_stop": 60.0e-6,
-      "pop": 20,
-      "n_itr": 20,
+      "wl_start": 10.0e-6,
+      "wl_stop": 50.0e-6,
+      "pop": 40,
+      "n_itr": 30,
       "fun_obj_str": "fo7"
+    },
+    {
+      "data_name": "L1FO8_gwo_10_50_1_res3",
+      "modelo": "gwo",
+      "n_freq": 150,
+      "resolution": 3,
+      "wl_start": 10.0e-6,
+      "wl_stop": 50.0e-6,
+      "pop": 40,
+      "n_itr": 30,
+      "fun_obj_str": "fo8"
+    },
+    {
+      "data_name": "L1FO8_pso_10_50_1_res3",
+      "modelo": "pso",
+      "n_freq": 150,
+      "resolution": 3,
+      "wl_start": 10.0e-6,
+      "wl_stop": 50.0e-6,
+      "pop": 40,
+      "n_itr": 30,
+      "fun_obj_str": "fo8"
     }
   ]
 }
