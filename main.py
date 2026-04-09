@@ -47,7 +47,7 @@ def fo6(solution):
 
 def fo7(solution):
     data = run(solution)
-    return sum(data["sum_90"]) + sum(data["sum_98"]) - 0.5 * data["b_70"]
+    return sum(data["sum_90"]) + sum(data["sum_98"]) - 0.2 * data["b_70"]
 
 
 def simular(solution):
@@ -133,7 +133,7 @@ for item in fila["fila"]:
     fun_obj = eval(f"{fun_obj_str}")
     data_path = f"{fpath}\\data\\{data_name}.json"
     with (
-        open(f"{fpath}\\data\\diario_teste.txt", "a") as f
+        open(f"{fpath}\\data\\diario.txt", "a") as f
     ):  # Abre de novo (Agora certamente o arquivo existe e tem o eixo x na 1° linha)
         f.write(
             f"Nome: {data_name}, modelo: {modelo}, Resulucao: {resolution}, Banda: {wl_stop - wl_start}{(wl_start, wl_stop)}, nfreq: {n_freq}, Populacao: {pop}, Epocas: {n_itr}, função obj: {fun_obj_str}, lb: {lb}, ub: {ub}"
@@ -152,7 +152,7 @@ for item in fila["fila"]:
         wl_start=wl_start,
         wl_stop=wl_stop,
     )
-    pbar = tqdm(total=pop * n_itr, desc="Otimizando...")  # Barrinha de progresso
+    pbar = tqdm(total=pop * n_itr, desc="Otimizando")  # Barrinha de progresso
 
     problem = {
         "obj_func": fun_obj,
@@ -177,10 +177,9 @@ for item in fila["fila"]:
     fim = time.perf_counter()
     tempo_total_segundos = fim - inicio
     tempo_formatado = str(timedelta(seconds=int(tempo_total_segundos)))
-
     with (
         open(f"{fpath}\\data\\diario.txt", "a") as f
     ):  # Abre de novo (Agora certamente o arquivo existe e tem o eixo x na 1° linha)
-        f.write(f" tempo: {tempo_formatado}")  # Adiciona os dados do teste rodado
-        f.write("\n")  # Pula linha
+        f.write(f" |tempo: {tempo_formatado}|")  # Adiciona os dados do teste rodado
+        f.write("\n\n")  # Pula linha
         f.close()

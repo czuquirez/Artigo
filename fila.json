@@ -1,0 +1,59 @@
+{
+  "fila": [
+    {
+      "data_name": "L1FO6_pso_3_60_1_res3",
+      "modelo": "pso",
+      "n_freq": 150,
+      "resolution": 3,
+      "wl_start": 3.0e-6,
+      "wl_stop": 60.0e-6,
+      "pop": 20,
+      "n_itr": 20,
+      "fun_obj_str": "fo6"
+    },
+    {
+      "data_name": "L1FO5_gwo_3_60_1_res3",
+      "modelo": "gwo",
+      "n_freq": 150,
+      "resolution": 3,
+      "wl_start": 3.0e-6,
+      "wl_stop": 60.0e-6,
+      "pop": 20,
+      "n_itr": 20,
+      "fun_obj_str": "fo5"
+    },
+    {
+      "data_name": "L1FO5_pso_3_60_1_res3",
+      "modelo": "pso",
+      "n_freq": 150,
+      "resolution": 3,
+      "wl_start": 3.0e-6,
+      "wl_stop": 60.0e-6,
+      "pop": 20,
+      "n_itr": 20,
+      "fun_obj_str": "fo5"
+    },
+    {
+      "data_name": "L1FO7_gwo_3_60_1_res3",
+      "modelo": "gwo",
+      "n_freq": 150,
+      "resolution": 3,
+      "wl_start": 3.0e-6,
+      "wl_stop": 60.0e-6,
+      "pop": 20,
+      "n_itr": 20,
+      "fun_obj_str": "fo7"
+    },
+    {
+      "data_name": "L1FO7_pso_3_60_1_res3",
+      "modelo": "pso",
+      "n_freq": 150,
+      "resolution": 3,
+      "wl_start": 3.0e-6,
+      "wl_stop": 60.0e-6,
+      "pop": 20,
+      "n_itr": 20,
+      "fun_obj_str": "fo7"
+    }
+  ]
+}
