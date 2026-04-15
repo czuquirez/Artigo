@@ -92,7 +92,7 @@ def sim(params):
     lum.objects = setparams(params)
     lum.config()
     pbar.update()
-    # input()
+    input()
     return 0.0
 
 
@@ -127,10 +127,10 @@ for item in fila["fila"]:
     (
         data_name,
         modelo,
+        n_freq,
         resolution,
         wl_start,
         wl_stop,
-        n_freq,
         pop,
         n_itr,
         fun_obj_str,
